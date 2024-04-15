@@ -1,0 +1,39 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class AbstractAutowireCapableBeanFactory {
+  # createBean(String, BeanDefinition): Object
+}
+class AbstractBeanFactory {
+  # createBean(String, BeanDefinition): Object
+  # getBeanDefinition(String): BeanDefinition
+  + getBean(String): Object
+}
+interface BeanDefinitionRegistry << interface >> {
+  + registerBeanDefinition(String, BeanDefinition): void
+}
+interface BeanFactory << interface >> {
+  + getBean(String): Object
+}
+class DefaultListableBeanFactory {
+  + registerBeanDefinition(String, BeanDefinition): void
+  + getBeanDefinition(String): BeanDefinition
+}
+class DefaultSingletonBeanRegistry {
+  + getSingleton(String): Object
+  # addSingleton(String, Object): void
+}
+interface SingletonBeanRegistry << interface >> {
+  + getSingleton(String): Object
+}
+
+AbstractAutowireCapableBeanFactory  -[#000082,plain]-^  AbstractBeanFactory                
+AbstractBeanFactory                 -[#008200,dashed]-^  BeanFactory                        
+AbstractBeanFactory                 -[#000082,plain]-^  DefaultSingletonBeanRegistry       
+DefaultListableBeanFactory          -[#000082,plain]-^  AbstractAutowireCapableBeanFactory 
+DefaultListableBeanFactory          -[#008200,dashed]-^  BeanDefinitionRegistry             
+DefaultSingletonBeanRegistry        -[#008200,dashed]-^  SingletonBeanRegistry              
+@enduml
